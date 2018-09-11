@@ -24,7 +24,7 @@ public class GenericIntro {
 		System.out.println("삼성 신상 이름은 : \n"+
 						itName.getOne()+itVers.getOne());
 		System.out.println("=================2===============");
-		Item<List<String>> it = new Item<>();
+		Item<List<String>> it = new Item<>();ss
 		it.setSome(
 				Arrays.asList(new String[] {"Hello","world","Generic"})
 				);
