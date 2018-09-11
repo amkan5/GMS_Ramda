@@ -1,4 +1,4 @@
-package com.gms.web;
+package com.gms.web.cmm;
 
 import java.text.DateFormat;
 import java.util.Date;
