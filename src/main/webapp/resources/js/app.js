@@ -84,19 +84,17 @@ app = {
 		},
 		setContentView : ()=>{
 			console.log('step 4 '+app.session.path('js'));
+			//화면
 		}
 };
 
 app.session = { //init에 접근가능 
 		context : x=>{
 			console.log('step 2'+x);
-			sessionStorage.setItem('context', x);
-			sessionStorage.setItem('js',x+'/resources/js');
-			sessionStorage.setItem('css',x+'/resources/css');
-			sessionStorage.setItem('img',x+'/resources/img');
+			
 		},
 		path : x=>{
-			return sessionStorage.getItem(x);
+			
 		},
 		setmember : x=>{
 			if(x.userid!=""){

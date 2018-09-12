@@ -15,7 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
+
 
 /**
  * Handles requests for the application home page.
@@ -31,12 +33,12 @@ public class HomeController {
 	 */
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET) //web.xml에서 왔어
-	public String home(HttpSession session, HttpServletRequest request) {
-		String context = request.getContextPath();
-		logger.info("Welcome home! The client locale is {}.", context);
-		session.setAttribute("context", context);
-		//model.addAttribute("context", "");
-		return "home:common/content.tiles";
+	public String home(Model model, HttpServletRequest request) {
+		/*String context = request.getContextPath();
+		logger.info("Welcome home! The client locale is {}.", context);*/
+		model.addAttribute("context", Util.ctx.apply(request));
+		Util.Log.accept("aaa ==> " +Util.ctx.apply(request));
+		return "main";
 	}
 	@RequestMapping("/move/{prifix}/{dir}/{page}")
 	public String move(
