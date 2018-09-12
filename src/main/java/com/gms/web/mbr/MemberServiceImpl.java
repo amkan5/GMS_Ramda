@@ -6,8 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gms.web.mapper.MemberMapper;
-
 
 @Service //스프링에서 꺼내와야함 
 public class MemberServiceImpl implements MemberService{
@@ -21,7 +19,7 @@ public class MemberServiceImpl implements MemberService{
 		};
 		p.setAge(String.valueOf(119-Integer.parseInt(p.getSsn().substring(0, 2))));
 		memberDAO.insert(p);
-	}
+	} 
 
 	@Override
 	public List<?> list(Map<?, ?> p) {
