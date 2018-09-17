@@ -29,7 +29,7 @@ algo.main = { //main = 변수
 					+'</tr>'
 					+'</table>'
 					+'</div>');	
-		let $t__l = $('#t__l'); // let옆에 $는 엄청큰 dom객체임. 다시 호출하지않아
+		let $t__l = $('#t__l'); // let옆에 $는 dom객체이름 앞에.  다시 호출하지않아
 		let $t__r = $('#t__r'); 
 		$("<ul />")
 		.attr({id : 'side__menu'})
@@ -38,10 +38,8 @@ algo.main = { //main = 변수
 		.attr({id : 'arith'})
 		.addClass('list-group-item')
 		.appendTo($('#side__menu'));
-		$('<a/>')
-		.attr({href : '#'})
-		.html('등차수열의 합')
-		.appendTo($('#arith'))
+		let anchor = $.fn.anchor({txt:'등차수열의합'});
+		anchor.appendTo($('#arith'))
 		.click(e=>{
 			$t__r.empty();
 			/*let ques = '<div id="ques"><h3>'

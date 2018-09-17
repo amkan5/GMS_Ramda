@@ -32,3 +32,17 @@ $.prototype.zeroChecker=x=>{
 	}
 	return flag;
 }
+$.prototype.anchor=x=>{  
+	return $('<a/>')
+	.attr({href : '#'})
+	.html(x.txt);
+}
+//얘가 안먹는 이유는. 비동기 처리방식을 사용하기 때문에. JS파엘의 로드를 요청하고 나서 
+// 다음 로직을 실행함. Asynchronous  
+// promise, when 문법 사용해서 이문제를 극뽁 
+// Asyncho => AJAX => Nodejs
+//$ = sync 공간
+//언제 이 화면을 쓸꺼야 synch인지 asynch인지 개발자가 판단. 화면은 전부 asynch
+
+
+
