@@ -1,32 +1,41 @@
 package com.gms.web.mbr;
 
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.*;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gms.web.cmm.Util;
 
 
 
 
-@Controller 
+@RestController 
 @RequestMapping("/member")
 public class MemberController {
 	/*static final Logger logger = LoggerFactory.getLogger(HomeController.class);*/
-	@Autowired MemberService memberService;
 	@Autowired MemberMapper mbrMapper;
 	@Autowired MemberDTO memberDTO;
-	@RequestMapping(value="/add", method=RequestMethod.POST)
-	public String add(@ModelAttribute("member") MemberDTO member) {
+	@PostMapping(value="/add")
+	//public @ResponseBody Map<String,Object> login(@RequestBody MemberDTO pm) {
+	public @ResponseBody  Map<String,Object> add(@RequestBody MemberDTO pm) {
+		Map<String,Object> rmap = new HashMap<>();
 		System.out.println("add 진입");
-		System.out.println("name is "+member.getName());
-		memberService.add(member);
-		return "public:member/login.tiles";
+		System.out.println("넘어온 pm: "+pm);
+		//memberService.add(member);
+		return rmap;
 	}
 	@RequestMapping("/list")
 	public void list() {}
@@ -54,56 +63,35 @@ public class MemberController {
 		return path;
 	}
 	@PostMapping(value="/login")
-	public String login(@ModelAttribute MemberDTO member,
-			Model model) {
+	public @ResponseBody Map<String,Object> login(@RequestBody MemberDTO pm) {
 		/*@PathVariable String userid,
 		@PathVariable String password*/
-		System.out.println("로긴들어옴");
-		Predicate<String> p = s -> s.equals("");
-		System.out.println("++++++predicate p");
-		Predicate<String> notP = p.negate();
-		System.out.println("++++++predicate notP");
-		String path = "public:member/login.tiles";
-		System.out.println("member "+mbrMapper.exist(member.getUserid()));
-		if(notP.test(mbrMapper.exist(member.getUserid()))) {
-			System.out.println("++++++TEST안으로들어옴");
+		Map<String,Object> rmap = new HashMap<>();
+		 Util.Log.accept("넘어온 로그인 정보 : "+pm.getUserid());
+		System.out.println("member "+mbrMapper.count(pm));
+		String msg = "";
+		if(mbrMapper.count(pm)==0) {
+			msg = "NOT EXIST";
+		}else {
+			System.out.println("ELSE들어옴");
 			Function<MemberDTO,MemberDTO> f = (t)->{ //<파라미터,리턴값>
-				return mbrMapper.login(t);
+				return mbrMapper.get(t);
 			};
-			System.out.println("++++++이프문끝");
-			path = (f.apply(member)!=null)?
-					"auth:member/retrieve.tiles"
+			msg = (f.apply(pm)!=null)?
+					"CORRECT"
 					:
-					"public:member/login.tiles";
+					"WRONG";
+			memberDTO = f.apply(pm);
 		}
-			System.out.println("path끝");
-		/*Predicate<String> ls = s -> s.equals("auth:member/retrieve.tiles");
-		if(ls.test(path)) {
-			memberDTO = mbrMapper.selectOne(member.getUserid());
-		}*/
-		memberDTO = (Predicate.isEqual("public:member/login.tiles").test(path))?
-				mbrMapper.selectOne(member.getUserid()):
+		//rmap.put("ID EXIST", exist); //할려고하는 아이디가 없어 //너가넌 아이디는 맞는데 비번은 틀려
+		System.out.println("메세지: "+msg);
+		memberDTO = (Predicate.isEqual("CORRECT").test(msg))?
+				mbrMapper.get(pm):
 					new MemberDTO();
+		rmap.put("msg", msg);
+		rmap.put("member", memberDTO);
 		System.out.println("db끝");	
-		System.out.println(memberDTO.getUserid());
-		//syso -> member 정보
-		/*System.out.println(">>>>>>"+member.getUserid());
-		String r = mbrMapper.exist(member.getUserid());
-		System.out.println("++++++"+r);
-		boolean b = p.test(r);
-		System.out.println("::::::"+b);
-		System.out.println("param id >>"+member.getUserid());
-		System.out.println("param pw >> "+member.getPassword());
-		MemberDTO s2 = f.apply(member);
-		System.out.println("ssss:: " + s2);*/
-		/*String path = "public:member/login.tiles";
-		if(memberService.login(member)) {
-			model.addAttribute("member", 
-					memberService.retrieve(member.getUserid()));
-			path = "auth:member/retrieve.tiles";
-			System.out.println("로그인 성공");
-		}*/
-		return path;
+		return rmap;
 	}
 	@RequestMapping("/logout")
 	public String logout() {

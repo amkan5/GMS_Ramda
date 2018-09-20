@@ -18,13 +18,13 @@
   <link rel="stylesheet" type="text/css" href="${context}/resources/bootstrap/css/slick-team-slider.css" />
   <link rel="stylesheet" type="text/css" href="${context}/resources/bootstrap/css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
-  <script src="${context}/resources/js/algorithm.js"> </script>
+  <script src="${context}/resources/js/app.js"> </script>
  
 </head>
 <body>
 <div id="wrapper"></div>	
 <script>
-algo.init('${context}');
+app.init('${context}');
 /* app.session.setmember({"userid":'${member.userid}',
 					"password":'${member.password}',
 					"name":'${member.name}',
